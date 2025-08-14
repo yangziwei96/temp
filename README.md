@@ -1,153 +1,136 @@
-=== GEM-P Package Installation Diagnostic Report ===
-Generated on: 2025年  8月 14日 木曜日 13:53:22 JST
-User: B20474
-Hostname: CTOLWE00010
+#!/bin/bash
 
-=== Python Environment ===
-Python version: Python 3.10.6
-Pip version: pip 22.0.2 from /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages/pip (python 3.10)
-Virtual environment: /mnt/data1/Share/yang-intern/venv
+echo "=== GEM-P Package Installation Diagnostic Report ==="
+echo "Generated on: $(date)"
+echo "User: $(whoami)"
+echo "Hostname: $(hostname)"
+echo ""
 
-=== Network Connectivity Tests ===
-Ping to 8.8.8.8:
-3 packets transmitted, 3 received, 0% packet loss, time 2002ms
-rtt min/avg/max/mdev = 2.004/2.098/2.175/0.070 ms
+echo "=== Python Environment ==="
+echo "Python version: $(python3 --version)"
+echo "Pip version: $(pip --version)"
+echo "Virtual environment: $VIRTUAL_ENV"
+echo ""
 
-DNS resolution for pypi.org:
-Server:		127.0.0.53
-Address:	127.0.0.53#53
+echo "=== Network Connectivity Tests ==="
+echo "Ping to 8.8.8.8:"
+ping -c 3 8.8.8.8 2>/dev/null | tail -2 || echo "Ping failed"
+echo ""
 
-Non-authoritative answer:
-Name:	pypi.org
+echo "DNS resolution for pypi.org:"
+nslookup pypi.org 2>/dev/null | head -5 || echo "DNS lookup failed"
+echo ""
 
-HTTPS connectivity tests:
+echo "HTTPS connectivity tests:"
+curl -I https://pypi.org 2>/dev/null | head -1 || echo "HTTPS to pypi.org: FAILED"
+curl -I https://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTPS to Tsinghua mirror: FAILED"
+echo ""
 
-HTTP connectivity tests:
+echo "HTTP connectivity tests:"
+curl -I http://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTP to Tsinghua mirror: FAILED"
+echo ""
 
-=== Package Installation Tests ===
-Testing pip install with different mirrors:
-1. Default PyPI:
+echo "=== Package Installation Tests ==="
+echo "Testing pip install with different mirrors:"
+echo "1. Default PyPI:"
+pip install pandas 2>&1 | head -10 || echo "Default PyPI: FAILED"
+echo ""
 
-Usage:   
-  pip install [options] <requirement specifier> [package-index-options] ...
+echo "2. Tsinghua mirror (HTTPS):"
+pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ pandas 2>&1 | head -10 || echo "Tsinghua HTTPS: FAILED"
+echo ""
 
-2. Tsinghua mirror (HTTPS):
+echo "3. Tsinghua mirror (HTTP):"
+pip install --index-url http://pypi.tuna.tsinghua.edu.cn/simple/ pandas 2>&1 | head -10 || echo "Tsinghua HTTP: FAILED"
+echo ""
 
-Usage:   
-  pip install [options] <requirement specifier> [package-index-options] ...
+echo "4. Aliyun mirror:"
+pip install --index-url http://mirrors.aliyun.com/pypi/simple/ pandas 2>&1 | head -10 || echo "Aliyun: FAILED"
+echo ""
 
-3. Tsinghua mirror (HTTP):
+echo "5. With trusted hosts:"
+pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pandas 2>&1 | head -10 || echo "Trusted hosts: FAILED"
+echo ""
 
-Usage:   
-  pip install [options] <requirement specifier> [package-index-options] ...
+echo "6. Conda test (if available):"
+conda install pandas 2>&1 | head -10 2>/dev/null || echo "Conda: NOT AVAILABLE"
+echo ""
 
-4. Aliyun mirror:
+echo "=== GPU and CUDA Information ==="
+echo "CUDA version: $(nvcc --version 2>/dev/null | grep 'release' | cut -d' ' -f6 || echo 'CUDA not found')"
+echo "GPU devices: $(nvidia-smi --query-gpu=name --format=csv,noheader,nounits 2>/dev/null | head -1 || echo 'No GPU found')"
+echo "Number of GPUs: $(nvidia-smi --list-gpus 2>/dev/null | wc -l || echo '0')"
+echo ""
 
-Usage:   
-  pip install [options] <requirement specifier> [package-index-options] ...
+echo "=== PyTorch CUDA Support ==="
+python3 -c "import torch; print('PyTorch CUDA available:', torch.cuda.is_available()); print('CUDA version:', torch.version.cuda if torch.cuda.is_available() else 'N/A'); print('GPU count:', torch.cuda.device_count() if torch.cuda.is_available() else 0)" 2>/dev/null || echo "PyTorch CUDA test failed"
+echo ""
 
-5. With trusted hosts:
+echo "=== Memory Information ==="
+echo "System RAM: $(free -h | grep Mem | awk '{print $2}')"
+echo "GPU Memory: $(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -1 || echo 'N/A')"
+echo ""
 
-Usage:   
-  pip install [options] <requirement specifier> [package-index-options] ...
+echo "=== Storage Information ==="
+echo "Available disk space: $(df -h /mnt/data1/Share/yang-intern/ | tail -1 | awk '{print $4}')"
+echo "Current directory space: $(du -sh . | cut -f1)"
+echo ""
 
-6. Conda test (if available):
-./diagnostic_report.sh: 行 56: conda: コマンドが見つかりません
+echo "=== Current Package Status ==="
+echo "Installed packages in virtual environment:"
+pip list | grep -E "(torch|numpy|pandas|sklearn|matplotlib|rdkit|cobra)" || echo "No relevant packages found"
+echo ""
 
-=== GPU and CUDA Information ===
-CUDA version: V11.7.99
-GPU devices: NVIDIA GeForce RTX 4080
-Number of GPUs: 1
+echo "=== System Package Availability ==="
+echo "Available system packages:"
+apt search python3-pandas 2>/dev/null | head -3 || echo "apt search failed"
+apt search python3-scikit-learn 2>/dev/null | head -3 || echo "apt search failed"
+apt search python3-rdkit 2>/dev/null | head -3 || echo "apt search failed"
+echo ""
 
-=== PyTorch CUDA Support ===
-PyTorch CUDA available: True
-CUDA version: 11.8
-GPU count: 1
+echo "=== Required Packages Missing ==="
+python3 -c "import pandas; print('pandas: OK')" 2>/dev/null || echo "pandas: MISSING"
+python3 -c "import sklearn; print('scikit-learn: OK')" 2>/dev/null || echo "scikit-learn: MISSING"
+python3 -c "import matplotlib; print('matplotlib: OK')" 2>/dev/null || echo "matplotlib: MISSING"
+python3 -c "import seaborn; print('seaborn: OK')" 2>/dev/null || echo "seaborn: MISSING"
+python3 -c "import rdkit; print('rdkit: OK')" 2>/dev/null || echo "rdkit: MISSING"
+python3 -c "import cobra; print('cobra: OK')" 2>/dev/null || echo "cobra: MISSING"
+python3 -c "import optlang; print('optlang: OK')" 2>/dev/null || echo "optlang: MISSING"
+python3 -c "import tqdm; print('tqdm: OK')" 2>/dev/null || echo "tqdm: MISSING"
+python3 -c "import joblib; print('joblib: OK')" 2>/dev/null || echo "joblib: MISSING"
+echo ""
 
-=== Memory Information ===
-System RAM: 125Gi
-GPU Memory: 16376
+echo "=== System Information ==="
+echo "OS: $(lsb_release -d 2>/dev/null | cut -f2 || uname -a)"
+echo "Architecture: $(uname -m)"
+echo "Kernel: $(uname -r)"
+echo ""
 
-=== Storage Information ===
-Available disk space: 1.6T
-Current directory space: 155M
+echo "=== User Permissions ==="
+echo "Can use sudo: $(sudo -n true 2>/dev/null && echo 'YES' || echo 'NO')"
+echo "User groups: $(groups)"
+echo ""
 
-=== Current Package Status ===
-Installed packages in virtual environment:
-numpy                    2.1.2
-torch                    2.7.1+cu118
-torch_cluster            1.6.3+pt27cu118
-torch_scatter            2.1.2+pt27cu118
-torch_sparse             0.6.18+pt27cu118
-torch_spline_conv        1.2.2+pt27cu118
-torchaudio               2.7.1+cu118
-torchvision              0.22.1+cu118
+echo "=== Package Manager Status ==="
+echo "apt update test:"
+sudo -n apt update 2>/dev/null | head -3 || echo "apt update failed (requires sudo)"
+echo ""
 
-=== System Package Availability ===
-Available system packages:
-ソート中...
-全文検索...
-python3-pandas/jammy,jammy 1.3.5+dfsg-3 all
-ソート中...
-全文検索...
-ソート中...
-全文検索...
-python3-rdkit/jammy 202109.2-1build1 amd64
+echo "=== Network Proxy Information ==="
+echo "HTTP_PROXY: $HTTP_PROXY"
+echo "HTTPS_PROXY: $HTTPS_PROXY"
+echo "http_proxy: $http_proxy"
+echo "https_proxy: $https_proxy"
+echo ""
 
-=== Required Packages Missing ===
-pandas: MISSING
-scikit-learn: MISSING
-matplotlib: MISSING
-seaborn: MISSING
-rdkit: MISSING
-cobra: MISSING
-optlang: MISSING
-tqdm: MISSING
-joblib: MISSING
+echo "=== Additional Package Details ==="
+echo "PyTorch Geometric version needed: >=2.1.0"
+echo "Current torch version: $(python3 -c 'import torch; print(torch.__version__)' 2>/dev/null || echo 'Unknown')"
+echo ""
 
-=== System Information ===
-OS: Ubuntu 22.04.1 LTS
-Architecture: x86_64
-Kernel: 5.15.0-58-generic
+echo "=== Alternative Installation Methods ==="
+echo "Conda available: $(which conda 2>/dev/null && echo 'YES' || echo 'NO')"
+echo "pip config location: $(pip config list 2>/dev/null | head -1 || echo 'No pip config')"
+echo ""
 
-=== User Permissions ===
-Can use sudo: NO
-User groups: B20474 techrg shared-users
-
-=== Package Manager Status ===
-apt update test:
-
-=== Network Proxy Information ===
-HTTP_PROXY: 
-HTTPS_PROXY: 
-http_proxy: 
-https_proxy: 
-
-=== Additional Package Details ===
-PyTorch Geometric version needed: >=2.1.0
-Current torch version: 2.7.1+cu118
-
-=== Alternative Installation Methods ===
-Conda available: NO
-pip config location: 
-
-=== Recommendations for System Administrator ===
-1. Install missing Python packages system-wide:
-   sudo apt install python3-pandas python3-scikit-learn python3-matplotlib python3-seaborn python3-rdkit python3-tqdm python3-joblib python3-cobra python3-optlang
-
-2. Install PyTorch Geometric and dependencies:
-   sudo apt install python3-torch-geometric python3-torch-scatter python3-torch-sparse
-
-3. Configure network proxy for pip (if available):
-   Add proxy settings to /etc/pip.conf or user's ~/.pip/pip.conf
-
-4. Set up a local PyPI mirror or conda repository
-
-5. Grant sudo access to user B20474 for package installation
-
-6. Verify CUDA compatibility for PyTorch packages
-
-7. Consider installing packages in user space:
-   pip install --user package_name (if network access is restored)
-
-=== End of Report ===
+echo "=== End of Report ==="

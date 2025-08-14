@@ -1,3 +1,8 @@
+Here's a **diagnostic script** you can run to collect all the information your System Administrator needs:
+
+## Diagnostic Script
+
+```bash
 #!/bin/bash
 
 echo "=== GEM-P Package Installation Diagnostic Report ==="
@@ -56,4 +61,39 @@ echo ""
 
 echo "=== System Information ==="
 echo "OS: $(lsb_release -d 2>/dev/null | cut -f2 || uname -a)"
-echo "Arc
+echo "Architecture: $(uname -m)"
+echo "Kernel: $(uname -r)"
+echo ""
+
+echo "=== User Permissions ==="
+echo "Can use sudo: $(sudo -n true 2>/dev/null && echo 'YES' || echo 'NO')"
+echo "User groups: $(groups)"
+echo ""
+
+echo "=== Package Manager Status ==="
+echo "apt update test:"
+sudo -n apt update 2>/dev/null | head -3 || echo "apt update failed (requires sudo)"
+echo ""
+
+echo "=== Recommendations for System Administrator ==="
+echo "1. Install missing Python packages system-wide:"
+echo "   sudo apt install python3-pandas python3-scikit-learn python3-matplotlib python3-seaborn python3-rdkit python3-tqdm python3-joblib"
+echo ""
+echo "2. Or configure pip proxy settings in /etc/pip.conf"
+echo ""
+echo "3. Or set up a local PyPI mirror"
+echo ""
+echo "4. Or grant sudo access to user $(whoami) for package installation"
+echo ""
+echo "=== End of Report ==="
+```
+
+**Save this as `diagnostic_report.sh` and run:**
+```bash
+chmod +x diagnostic_report.sh
+./diagnostic_report.sh > system_admin_report.txt
+```
+
+**Then send the `system_admin_report.txt` file to your System Administrator.**
+
+This report contains all the information they need to understand your situation and provide the appropriate solution.

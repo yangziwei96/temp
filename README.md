@@ -1,136 +1,149 @@
-#!/bin/bash
+=== GEM-P Package Installation Diagnostic Report ===
+Generated on: 2025年  8月 14日 木曜日 14:01:45 JST
+User: B20474
+Hostname: CTOLWE00010
 
-echo "=== GEM-P Package Installation Diagnostic Report ==="
-echo "Generated on: $(date)"
-echo "User: $(whoami)"
-echo "Hostname: $(hostname)"
-echo ""
+=== Python Environment ===
+Python version: Python 3.10.6
+Pip version: pip 22.0.2 from /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages/pip (python 3.10)
+Virtual environment: /mnt/data1/Share/yang-intern/venv
 
-echo "=== Python Environment ==="
-echo "Python version: $(python3 --version)"
-echo "Pip version: $(pip --version)"
-echo "Virtual environment: $VIRTUAL_ENV"
-echo ""
+=== Network Connectivity Tests ===
+Ping to 8.8.8.8:
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+rtt min/avg/max/mdev = 2.014/2.085/2.181/0.070 ms
 
-echo "=== Network Connectivity Tests ==="
-echo "Ping to 8.8.8.8:"
-ping -c 3 8.8.8.8 2>/dev/null | tail -2 || echo "Ping failed"
-echo ""
+DNS resolution for pypi.org:
+Server:		127.0.0.53
+Address:	127.0.0.53#53
 
-echo "DNS resolution for pypi.org:"
-nslookup pypi.org 2>/dev/null | head -5 || echo "DNS lookup failed"
-echo ""
+Non-authoritative answer:
+Name:	pypi.org
 
-echo "HTTPS connectivity tests:"
-curl -I https://pypi.org 2>/dev/null | head -1 || echo "HTTPS to pypi.org: FAILED"
-curl -I https://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTPS to Tsinghua mirror: FAILED"
-echo ""
+HTTPS connectivity tests:
 
-echo "HTTP connectivity tests:"
-curl -I http://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTP to Tsinghua mirror: FAILED"
-echo ""
+HTTP connectivity tests:
 
-echo "=== Package Installation Tests ==="
-echo "Testing pip install with different mirrors:"
-echo "1. Default PyPI:"
-timeout 30 pip install pandas 2>&1 | head -15 || echo "Default PyPI: TIMEOUT or FAILED"
-echo ""
+=== Package Installation Tests ===
+Testing pip install with different mirrors:
+1. Default PyPI:
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
+ERROR: No matching distribution found for pandas
 
-echo "2. Tsinghua mirror (HTTPS):"
-timeout 30 pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ pandas 2>&1 | head -15 || echo "Tsinghua HTTPS: TIMEOUT or FAILED"
-echo ""
+2. Tsinghua mirror (HTTPS):
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple/
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
+ERROR: No matching distribution found for pandas
 
-echo "3. Tsinghua mirror (HTTP):"
-timeout 30 pip install --index-url http://pypi.tuna.tsinghua.edu.cn/simple/ pandas 2>&1 | head -15 || echo "Tsinghua HTTP: TIMEOUT or FAILED"
-echo ""
+3. Tsinghua mirror (HTTP):
+Looking in indexes: http://pypi.tuna.tsinghua.edu.cn/simple/
+WARNING: The repository located at pypi.tuna.tsinghua.edu.cn is not a trusted or secure host and is being ignored. If this repository is available via HTTPS we recommend you use HTTPS instead, otherwise you may silence this warning and allow it anyway with '--trusted-host pypi.tuna.tsinghua.edu.cn'.
+ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
+ERROR: No matching distribution found for pandas
 
-echo "4. Aliyun mirror:"
-timeout 30 pip install --index-url http://mirrors.aliyun.com/pypi/simple/ pandas 2>&1 | head -15 || echo "Aliyun: TIMEOUT or FAILED"
-echo ""
+4. Aliyun mirror:
+Looking in indexes: http://mirrors.aliyun.com/pypi/simple/
+WARNING: The repository located at mirrors.aliyun.com is not a trusted or secure host and is being ignored. If this repository is available via HTTPS we recommend you use HTTPS instead, otherwise you may silence this warning and allow it anyway with '--trusted-host mirrors.aliyun.com'.
+ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
+ERROR: No matching distribution found for pandas
 
-echo "5. With trusted hosts:"
-timeout 30 pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pandas 2>&1 | head -15 || echo "Trusted hosts: TIMEOUT or FAILED"
-echo ""
+5. With trusted hosts:
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
+ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
+ERROR: No matching distribution found for pandas
 
-echo "6. Conda test (if available):"
-timeout 30 conda install pandas 2>&1 | head -15 2>/dev/null || echo "Conda: NOT AVAILABLE"
-echo ""
+6. Conda test (if available):
+timeout: コマンド `conda' の実行に失敗しました: そのようなファイルやディレクトリはありません
 
-echo "=== GPU and CUDA Information ==="
-echo "CUDA version: $(nvcc --version 2>/dev/null | grep 'release' | cut -d' ' -f6 || echo 'CUDA not found')"
-echo "GPU devices: $(nvidia-smi --query-gpu=name --format=csv,noheader,nounits 2>/dev/null | head -1 || echo 'No GPU found')"
-echo "Number of GPUs: $(nvidia-smi --list-gpus 2>/dev/null | wc -l || echo '0')"
-echo ""
+=== GPU and CUDA Information ===
+CUDA version: V11.7.99
+GPU devices: NVIDIA GeForce RTX 4080
+Number of GPUs: 1
 
-echo "=== PyTorch CUDA Support ==="
-python3 -c "import torch; print('PyTorch CUDA available:', torch.cuda.is_available()); print('CUDA version:', torch.version.cuda if torch.cuda.is_available() else 'N/A'); print('GPU count:', torch.cuda.device_count() if torch.cuda.is_available() else 0)" 2>/dev/null || echo "PyTorch CUDA test failed"
-echo ""
+=== PyTorch CUDA Support ===
+PyTorch CUDA available: True
+CUDA version: 11.8
+GPU count: 1
 
-echo "=== Memory Information ==="
-echo "System RAM: $(free -h | grep Mem | awk '{print $2}')"
-echo "GPU Memory: $(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -1 || echo 'N/A')"
-echo ""
+=== Memory Information ===
+System RAM: 125Gi
+GPU Memory: 16376
 
-echo "=== Storage Information ==="
-echo "Available disk space: $(df -h /mnt/data1/Share/yang-intern/ | tail -1 | awk '{print $4}')"
-echo "Current directory space: $(du -sh . | cut -f1)"
-echo ""
+=== Storage Information ===
+Available disk space: 1.6T
+Current directory space: 155M
 
-echo "=== Current Package Status ==="
-echo "Installed packages in virtual environment:"
-pip list | grep -E "(torch|numpy|pandas|sklearn|matplotlib|rdkit|cobra)" || echo "No relevant packages found"
-echo ""
+=== Current Package Status ===
+Installed packages in virtual environment:
+numpy                    2.1.2
+torch                    2.7.1+cu118
+torch_cluster            1.6.3+pt27cu118
+torch_scatter            2.1.2+pt27cu118
+torch_sparse             0.6.18+pt27cu118
+torch_spline_conv        1.2.2+pt27cu118
+torchaudio               2.7.1+cu118
+torchvision              0.22.1+cu118
 
-echo "=== System Package Availability ==="
-echo "Available system packages:"
-apt search python3-pandas 2>/dev/null | head -3 || echo "apt search failed"
-apt search python3-scikit-learn 2>/dev/null | head -3 || echo "apt search failed"
-apt search python3-rdkit 2>/dev/null | head -3 || echo "apt search failed"
-echo ""
+=== System Package Availability ===
+Available system packages:
+ソート中...
+全文検索...
+python3-pandas/jammy,jammy 1.3.5+dfsg-3 all
+ソート中...
+全文検索...
+ソート中...
+全文検索...
+python3-rdkit/jammy 202109.2-1build1 amd64
 
-echo "=== Required Packages Missing ==="
-python3 -c "import pandas; print('pandas: OK')" 2>/dev/null || echo "pandas: MISSING"
-python3 -c "import sklearn; print('scikit-learn: OK')" 2>/dev/null || echo "scikit-learn: MISSING"
-python3 -c "import matplotlib; print('matplotlib: OK')" 2>/dev/null || echo "matplotlib: MISSING"
-python3 -c "import seaborn; print('seaborn: OK')" 2>/dev/null || echo "seaborn: MISSING"
-python3 -c "import rdkit; print('rdkit: OK')" 2>/dev/null || echo "rdkit: MISSING"
-python3 -c "import cobra; print('cobra: OK')" 2>/dev/null || echo "cobra: MISSING"
-python3 -c "import optlang; print('optlang: OK')" 2>/dev/null || echo "optlang: MISSING"
-python3 -c "import tqdm; print('tqdm: OK')" 2>/dev/null || echo "tqdm: MISSING"
-python3 -c "import joblib; print('joblib: OK')" 2>/dev/null || echo "joblib: MISSING"
-echo ""
+=== Required Packages Missing ===
+pandas: MISSING
+scikit-learn: MISSING
+matplotlib: MISSING
+seaborn: MISSING
+rdkit: MISSING
+cobra: MISSING
+optlang: MISSING
+tqdm: MISSING
+joblib: MISSING
 
-echo "=== System Information ==="
-echo "OS: $(lsb_release -d 2>/dev/null | cut -f2 || uname -a)"
-echo "Architecture: $(uname -m)"
-echo "Kernel: $(uname -r)"
-echo ""
+=== System Information ===
+OS: Ubuntu 22.04.1 LTS
+Architecture: x86_64
+Kernel: 5.15.0-58-generic
 
-echo "=== User Permissions ==="
-echo "Can use sudo: $(sudo -n true 2>/dev/null && echo 'YES' || echo 'NO')"
-echo "User groups: $(groups)"
-echo ""
+=== User Permissions ===
+Can use sudo: NO
+User groups: B20474 techrg shared-users
 
-echo "=== Package Manager Status ==="
-echo "apt update test:"
-sudo -n apt update 2>/dev/null | head -3 || echo "apt update failed (requires sudo)"
-echo ""
+=== Package Manager Status ===
+apt update test:
 
-echo "=== Network Proxy Information ==="
-echo "HTTP_PROXY: $HTTP_PROXY"
-echo "HTTPS_PROXY: $HTTPS_PROXY"
-echo "http_proxy: $http_proxy"
-echo "https_proxy: $https_proxy"
-echo ""
+=== Network Proxy Information ===
+HTTP_PROXY: 
+HTTPS_PROXY: 
+http_proxy: 
+https_proxy: 
 
-echo "=== Additional Package Details ==="
-echo "PyTorch Geometric version needed: >=2.1.0"
-echo "Current torch version: $(python3 -c 'import torch; print(torch.__version__)' 2>/dev/null || echo 'Unknown')"
-echo ""
+=== Additional Package Details ===
+PyTorch Geometric version needed: >=2.1.0
+Current torch version: 2.7.1+cu118
 
-echo "=== Alternative Installation Methods ==="
-echo "Conda available: $(which conda 2>/dev/null && echo 'YES' || echo 'NO')"
-echo "pip config location: $(pip config list 2>/dev/null | head -1 || echo 'No pip config')"
-echo ""
+=== Alternative Installation Methods ===
+Conda available: NO
+pip config location: 
 
-echo "=== End of Report ==="
+=== End of Report ===

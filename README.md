@@ -1,26 +1,43 @@
-Got it! Here's the **best single solution** with code you can run directly on your lab server:
+The connection reset errors indicate your lab server has strict firewall/proxy restrictions that are actively blocking pip connections. Here's a **diagnostic test** to understand your network situation:
 
-## Best Solution: Try Alternative Pip Mirrors
+## Network Diagnostic Test
 
-Run these commands on your lab server in order until one works:
-
-```bash
-# Try Tsinghua mirror (most reliable in Asia)
-pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn torch>=1.12.1 torch-geometric>=2.1.0 torch-scatter>=2.0.9 torch-sparse>=0.6.15 pandas>=1.3.5 numpy>=1.21.5 scikit-learn>=1.0.2 rdkit>=2022.03.5 tqdm>=4.62.1 matplotlib>=3.5.0 seaborn>=0.11.0 cobra>=0.22.1 optlang>=1.5.2 joblib>=1.2.0
-```
-
-If that fails, try:
+Run these commands on your lab server to test connectivity:
 
 ```bash
-# Try Aliyun mirror
-pip install --index-url https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com torch>=1.12.1 torch-geometric>=2.1.0 torch-scatter>=2.0.9 torch-sparse>=0.6.15 pandas>=1.3.5 numpy>=1.21.5 scikit-learn>=1.0.2 rdkit>=2022.03.5 tqdm>=4.62.1 matplotlib>=3.5.0 seaborn>=0.11.0 cobra>=0.22.1 optlang>=1.5.2 joblib>=1.2.0
+# Test basic connectivity
+ping -c 3 8.8.8.8
+
+# Test DNS resolution
+nslookup pypi.org
+
+# Test HTTP connectivity to different mirrors
+curl -I https://pypi.org
+curl -I https://pypi.tuna.tsinghua.edu.cn
+curl -I https://mirrors.aliyun.com
+
+# Test pip configuration
+pip config list
+
+# Check if you're behind a proxy
+echo $http_proxy
+echo $https_proxy
+echo $HTTP_PROXY
+echo $HTTPS_PROXY
+
+# Test with different pip options
+pip install --verbose --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ numpy
 ```
 
-If both fail, try:
+## Most Likely Solutions Based on Results:
 
+**If ping works but curl fails**: You need to configure pip to use a proxy
 ```bash
-# Try with all trusted hosts
-pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.tuna.tsinghua.edu.cn --trusted-host mirrors.aliyun.com torch>=1.12.1 torch-geometric>=2.1.0 torch-scatter>=2.0.9 torch-sparse>=0.6.15 pandas>=1.3.5 numpy>=1.21.5 scikit-learn>=1.0.2 rdkit>=2022.03.5 tqdm>=4.62.1 matplotlib>=3.5.0 seaborn>=0.11.0 cobra>=0.22.1 optlang>=1.5.2 joblib>=1.2.0
+pip install --proxy http://your-proxy:port package_name
 ```
 
-Start with the first command - it has the highest success rate for servers in Asia.
+**If all external connections fail**: Your server is completely isolated - you'll need to download packages locally and transfer them
+
+**If some mirrors work**: Use the working mirror for all installations
+
+Run the diagnostic test and tell me the results - this will tell us exactly what's blocking your connections and how to work around it.

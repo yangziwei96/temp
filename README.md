@@ -1,57 +1,26 @@
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ # Test basic connectivity
-ping -c 3 8.8.8.8
+Perfect! The diagnostic shows exactly what's happening:
 
-# Test DNS resolution
-nslookup pypi.org
+## Analysis:
+- ✅ **Basic connectivity works** (ping to 8.8.8.8 succeeds)
+- ✅ **DNS resolution works** (nslookup resolves pypi.org)
+- ❌ **HTTPS connections are blocked** (all curl HTTPS requests fail with SSL connection reset)
+- ✅ **pip can access some packages** (numpy is already installed)
 
-# Test HTTP connectivity to different mirrors
-curl -I https://pypi.org
-curl -I https://pypi.tuna.tsinghua.edu.cn
-curl -I https://mirrors.aliyun.com
+## Root Cause:
+Your lab server has a **firewall/proxy that blocks HTTPS connections** but allows basic internet connectivity. This is a common security policy.
 
-# Test pip configuration
-pip config list
+## Solution: Use HTTP Instead of HTTPS
 
-# Check if you're behind a proxy
-echo $http_proxy
-pip install --verbose --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ numpy
-PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=2.18 ms
-64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=2.24 ms
-64 bytes from 8.8.8.8: icmp_seq=3 ttl=112 time=2.29 ms
+Try this command on your lab server:
 
---- 8.8.8.8 ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 2003ms
-rtt min/avg/max/mdev = 2.177/2.235/2.293/0.047 ms
-Server:         127.0.0.53
-Address:        127.0.0.53#53
+```bash
+pip install --index-url http://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn torch>=1.12.1 torch-geometric>=2.1.0 torch-scatter>=2.0.9 torch-sparse>=0.6.15 pandas>=1.3.5 numpy>=1.21.5 scikit-learn>=1.0.2 rdkit>=2022.03.5 tqdm>=4.62.1 matplotlib>=3.5.0 seaborn>=0.11.0 cobra>=0.22.1 optlang>=1.5.2 joblib>=1.2.0
+```
 
-Non-authoritative answer:
-Name:   pypi.org
-Address: 151.101.64.223
-Name:   pypi.org
-Address: 151.101.128.223
-Name:   pypi.org
-Address: 151.101.192.223
-Name:   pypi.org
-Address: 151.101.0.223
-Name:   pypi.org
-Address: 2a04:4e42:200::223
-Name:   pypi.org
-Address: 2a04:4e42:400::223
-Name:   pypi.org
-Address: 2a04:4e42::223
-Name:   pypi.org
-Address: 2a04:4e42:600::223
+If that doesn't work, try:
 
-curl: (35) OpenSSL SSL_connect: 接続が相手からリセットされました in connection to pypi.org:443 
-curl: (35) OpenSSL SSL_connect: 接続が相手からリセットされました in connection to pypi.tuna.tsinghua.edu.cn:443 
-curl: (35) OpenSSL SSL_connect: 接続が相手からリセットされました in connection to mirrors.aliyun.com:443 
+```bash
+pip install --index-url http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com torch>=1.12.1 torch-geometric>=2.1.0 torch-scatter>=2.0.9 torch-sparse>=0.6.15 pandas>=1.3.5 numpy>=1.21.5 scikit-learn>=1.0.2 rdkit>=2022.03.5 tqdm>=4.62.1 matplotlib>=3.5.0 seaborn>=0.11.0 cobra>=0.22.1 optlang>=1.5.2 joblib>=1.2.0
+```
 
-
-
-
-Using pip 22.0.2 from /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages/pip (python 3.10)
-Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple/
-Requirement already satisfied: numpy in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.1.2)
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ 
+The key is using **HTTP instead of HTTPS** - your firewall is likely blocking HTTPS but allowing HTTP traffic.

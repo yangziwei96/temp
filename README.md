@@ -1,49 +1,59 @@
-venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ # Try installing packages that might be available in your environment
-pip install --no-deps pandas scikit-learn matplotlib seaborn tqdm joblib
+#!/bin/bash
 
-# Or try installing from system Python
-python3 -m pip install --user pandas scikit-learn matplotlib seaborn tqdm joblib
-WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
-ERROR: No matching distribution found for pandas
-ERROR: Can not perform a '--user' install. User site-packages are not visible in this virtualenv.
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ # Check what's already installed in your venv
-pip list | grep -E "(pandas|sklearn|matplotlib|seaborn|tqdm|joblib|rdkit)"
+echo "=== GEM-P Package Installation Diagnostic Report ==="
+echo "Generated on: $(date)"
+echo "User: $(whoami)"
+echo "Hostname: $(hostname)"
+echo ""
 
-# Try importing packages to see if they're already available
-python3 -c "import pandas; print('pandas version:', pandas.__version__)" 2>/dev/null || echo "pandas not in venv"
-python3 -c "import sklearn; print('sklearn version:', sklearn.__version__)" 2>/dev/null || echo "sklearn not in venv"
-python3 -c "import matplotlib; print('matplotlib version:', matplotlib.__version__)" 2>/dev/null || echo "matplotlib not in venv"
-pandas not in venv
-sklearn not in venv
-matplotlib not in venv
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ # Try installing with different pip options
-pip install --no-cache-dir --no-deps pandas
-pip install --no-cache-dir --no-deps scikit-learn
-pip install --no-cache-dir --no-deps matplotlib
-WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/pandas/
-ERROR: Could not find a version that satisfies the requirement pandas (from versions: none)
-ERROR: No matching distribution found for pandas
-WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/scikit-learn/
-WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/scikit-learn/
-WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/scikit-learn/
-WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/scikit-learn/
-WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/scikit-learn/
-ERROR: Could not find a version that satisfies the requirement scikit-learn (from versions: none)
-ERROR: No matching distribution found for scikit-learn
-WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/matplotlib/
-WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/matplotlib/
-WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/matplotlib/
-WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/matplotlib/
-WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(104, '接続が相手からリセットされました'))': /simple/matplotlib/
-ERROR: Could not find a version that satisfies the requirement matplotlib (from versions: none)
-ERROR: No matching distribution found for matplotlib
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ 
+echo "=== Python Environment ==="
+echo "Python version: $(python3 --version)"
+echo "Pip version: $(pip --version)"
+echo "Virtual environment: $VIRTUAL_ENV"
+echo ""
+
+echo "=== Network Connectivity Tests ==="
+echo "Ping to 8.8.8.8:"
+ping -c 3 8.8.8.8 2>/dev/null | tail -2 || echo "Ping failed"
+echo ""
+
+echo "DNS resolution for pypi.org:"
+nslookup pypi.org 2>/dev/null | head -5 || echo "DNS lookup failed"
+echo ""
+
+echo "HTTPS connectivity tests:"
+curl -I https://pypi.org 2>/dev/null | head -1 || echo "HTTPS to pypi.org: FAILED"
+curl -I https://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTPS to Tsinghua mirror: FAILED"
+echo ""
+
+echo "HTTP connectivity tests:"
+curl -I http://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTP to Tsinghua mirror: FAILED"
+echo ""
+
+echo "=== Current Package Status ==="
+echo "Installed packages in virtual environment:"
+pip list | grep -E "(torch|numpy|pandas|sklearn|matplotlib|rdkit|cobra)" || echo "No relevant packages found"
+echo ""
+
+echo "=== System Package Availability ==="
+echo "Available system packages:"
+apt search python3-pandas 2>/dev/null | head -3 || echo "apt search failed"
+apt search python3-scikit-learn 2>/dev/null | head -3 || echo "apt search failed"
+apt search python3-rdkit 2>/dev/null | head -3 || echo "apt search failed"
+echo ""
+
+echo "=== Required Packages Missing ==="
+python3 -c "import pandas; print('pandas: OK')" 2>/dev/null || echo "pandas: MISSING"
+python3 -c "import sklearn; print('scikit-learn: OK')" 2>/dev/null || echo "scikit-learn: MISSING"
+python3 -c "import matplotlib; print('matplotlib: OK')" 2>/dev/null || echo "matplotlib: MISSING"
+python3 -c "import seaborn; print('seaborn: OK')" 2>/dev/null || echo "seaborn: MISSING"
+python3 -c "import rdkit; print('rdkit: OK')" 2>/dev/null || echo "rdkit: MISSING"
+python3 -c "import cobra; print('cobra: OK')" 2>/dev/null || echo "cobra: MISSING"
+python3 -c "import optlang; print('optlang: OK')" 2>/dev/null || echo "optlang: MISSING"
+python3 -c "import tqdm; print('tqdm: OK')" 2>/dev/null || echo "tqdm: MISSING"
+python3 -c "import joblib; print('joblib: OK')" 2>/dev/null || echo "joblib: MISSING"
+echo ""
+
+echo "=== System Information ==="
+echo "OS: $(lsb_release -d 2>/dev/null | cut -f2 || uname -a)"
+echo "Arc

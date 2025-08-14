@@ -1,99 +1,71 @@
-Here's a **diagnostic script** you can run to collect all the information your System Administrator needs:
+=== GEM-P Package Installation Diagnostic Report ===
+Generated on: 2025年  8月 14日 木曜日 13:44:24 JST
+User: B20474
+Hostname: CTOLWE00010
 
-## Diagnostic Script
+=== Python Environment ===
+Python version: Python 3.10.6
+Pip version: pip 22.0.2 from /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages/pip (python 3.10)
+Virtual environment: /mnt/data1/Share/yang-intern/venv
 
-```bash
-#!/bin/bash
+=== Network Connectivity Tests ===
+Ping to 8.8.8.8:
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 2.054/2.099/2.138/0.034 ms
 
-echo "=== GEM-P Package Installation Diagnostic Report ==="
-echo "Generated on: $(date)"
-echo "User: $(whoami)"
-echo "Hostname: $(hostname)"
-echo ""
+DNS resolution for pypi.org:
+Server:		127.0.0.53
+Address:	127.0.0.53#53
 
-echo "=== Python Environment ==="
-echo "Python version: $(python3 --version)"
-echo "Pip version: $(pip --version)"
-echo "Virtual environment: $VIRTUAL_ENV"
-echo ""
+Non-authoritative answer:
+Name:	pypi.org
 
-echo "=== Network Connectivity Tests ==="
-echo "Ping to 8.8.8.8:"
-ping -c 3 8.8.8.8 2>/dev/null | tail -2 || echo "Ping failed"
-echo ""
+HTTPS connectivity tests:
 
-echo "DNS resolution for pypi.org:"
-nslookup pypi.org 2>/dev/null | head -5 || echo "DNS lookup failed"
-echo ""
+HTTP connectivity tests:
 
-echo "HTTPS connectivity tests:"
-curl -I https://pypi.org 2>/dev/null | head -1 || echo "HTTPS to pypi.org: FAILED"
-curl -I https://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTPS to Tsinghua mirror: FAILED"
-echo ""
+=== Current Package Status ===
+Installed packages in virtual environment:
+numpy                    2.1.2
+torch                    2.7.1+cu118
+torch_cluster            1.6.3+pt27cu118
+torch_scatter            2.1.2+pt27cu118
+torch_sparse             0.6.18+pt27cu118
+torch_spline_conv        1.2.2+pt27cu118
+torchaudio               2.7.1+cu118
+torchvision              0.22.1+cu118
 
-echo "HTTP connectivity tests:"
-curl -I http://pypi.tuna.tsinghua.edu.cn 2>/dev/null | head -1 || echo "HTTP to Tsinghua mirror: FAILED"
-echo ""
+=== System Package Availability ===
+Available system packages:
+ソート中...
+全文検索...
+python3-pandas/jammy,jammy 1.3.5+dfsg-3 all
+ソート中...
+全文検索...
+ソート中...
+全文検索...
+python3-rdkit/jammy 202109.2-1build1 amd64
 
-echo "=== Current Package Status ==="
-echo "Installed packages in virtual environment:"
-pip list | grep -E "(torch|numpy|pandas|sklearn|matplotlib|rdkit|cobra)" || echo "No relevant packages found"
-echo ""
+=== Required Packages Missing ===
+pandas: MISSING
+scikit-learn: MISSING
+matplotlib: MISSING
+seaborn: MISSING
+rdkit: MISSING
+cobra: MISSING
+optlang: MISSING
+tqdm: MISSING
+joblib: MISSING
 
-echo "=== System Package Availability ==="
-echo "Available system packages:"
-apt search python3-pandas 2>/dev/null | head -3 || echo "apt search failed"
-apt search python3-scikit-learn 2>/dev/null | head -3 || echo "apt search failed"
-apt search python3-rdkit 2>/dev/null | head -3 || echo "apt search failed"
-echo ""
+=== System Information ===
+OS: Ubuntu 22.04.1 LTS
+Architecture: x86_64
+Kernel: 5.15.0-58-generic
 
-echo "=== Required Packages Missing ==="
-python3 -c "import pandas; print('pandas: OK')" 2>/dev/null || echo "pandas: MISSING"
-python3 -c "import sklearn; print('scikit-learn: OK')" 2>/dev/null || echo "scikit-learn: MISSING"
-python3 -c "import matplotlib; print('matplotlib: OK')" 2>/dev/null || echo "matplotlib: MISSING"
-python3 -c "import seaborn; print('seaborn: OK')" 2>/dev/null || echo "seaborn: MISSING"
-python3 -c "import rdkit; print('rdkit: OK')" 2>/dev/null || echo "rdkit: MISSING"
-python3 -c "import cobra; print('cobra: OK')" 2>/dev/null || echo "cobra: MISSING"
-python3 -c "import optlang; print('optlang: OK')" 2>/dev/null || echo "optlang: MISSING"
-python3 -c "import tqdm; print('tqdm: OK')" 2>/dev/null || echo "tqdm: MISSING"
-python3 -c "import joblib; print('joblib: OK')" 2>/dev/null || echo "joblib: MISSING"
-echo ""
+=== User Permissions ===
+Can use sudo: NO
+User groups: B20474 techrg shared-users
 
-echo "=== System Information ==="
-echo "OS: $(lsb_release -d 2>/dev/null | cut -f2 || uname -a)"
-echo "Architecture: $(uname -m)"
-echo "Kernel: $(uname -r)"
-echo ""
+=== Package Manager Status ===
+apt update test:
 
-echo "=== User Permissions ==="
-echo "Can use sudo: $(sudo -n true 2>/dev/null && echo 'YES' || echo 'NO')"
-echo "User groups: $(groups)"
-echo ""
-
-echo "=== Package Manager Status ==="
-echo "apt update test:"
-sudo -n apt update 2>/dev/null | head -3 || echo "apt update failed (requires sudo)"
-echo ""
-
-echo "=== Recommendations for System Administrator ==="
-echo "1. Install missing Python packages system-wide:"
-echo "   sudo apt install python3-pandas python3-scikit-learn python3-matplotlib python3-seaborn python3-rdkit python3-tqdm python3-joblib"
-echo ""
-echo "2. Or configure pip proxy settings in /etc/pip.conf"
-echo ""
-echo "3. Or set up a local PyPI mirror"
-echo ""
-echo "4. Or grant sudo access to user $(whoami) for package installation"
-echo ""
-echo "=== End of Report ==="
-```
-
-**Save this as `diagnostic_report.sh` and run:**
-```bash
-chmod +x diagnostic_report.sh
-./diagnostic_report.sh > system_admin_report.txt
-```
-
-**Then send the `system_admin_report.txt` file to your System Administrator.**
-
-This report contains all the information they need to understand your situation and provide the appropriate solution.

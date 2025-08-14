@@ -1,28 +1,36 @@
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ # Check what Python packages are available through apt
-apt search python3-pandas
-apt search python3-scikit-learn
-apt search python3-rdkit
+Great! The packages are available in the Ubuntu repositories, but you can't use sudo. Since you're in a virtual environment, let's try a different approach:
 
-# Check if any of these packages are already installed system-wide
-python3 -c "import pandas; print('pandas available')" 2>/dev/null || echo "pandas not available"
-python3 -c "import sklearn; print('sklearn available')" 2>/dev/null || echo "sklearn not available"
-python3 -c "import rdkit; print('rdkit available')" 2>/dev/null || echo "rdkit not available"
-ソート中... 完了
-全文検索... 完了  
-python3-pandas/jammy,jammy 1.3.5+dfsg-3 all
-  data structures for "relational" or "labeled" data
+## Solution: Install packages without sudo using pip with system packages
 
-python3-pandas-lib/jammy 1.3.5+dfsg-3 amd64
-  low-level implementations and bindings for pandas
+Try installing the packages using pip but pointing to the system Python packages:
 
-ソート中... 完了
-全文検索... 完了  
-ソート中... 完了
-全文検索... 完了  
-python3-rdkit/jammy 202109.2-1build1 amd64
-  Collection of cheminformatics and machine-learning software
+```bash
+# Try installing packages that might be available in your environment
+pip install --no-deps pandas scikit-learn matplotlib seaborn tqdm joblib
 
-pandas not available
-sklearn not available
-rdkit not available
-(venv) B20474@CTOLWE00010:/mnt/data1/Share/yang-intern/GEM-P$ 
+# Or try installing from system Python
+python3 -m pip install --user pandas scikit-learn matplotlib seaborn tqdm joblib
+```
+
+## Alternative: Check if packages are already available in your virtual environment
+
+```bash
+# Check what's already installed in your venv
+pip list | grep -E "(pandas|sklearn|matplotlib|seaborn|tqdm|joblib|rdkit)"
+
+# Try importing packages to see if they're already available
+python3 -c "import pandas; print('pandas version:', pandas.__version__)" 2>/dev/null || echo "pandas not in venv"
+python3 -c "import sklearn; print('sklearn version:', sklearn.__version__)" 2>/dev/null || echo "sklearn not in venv"
+python3 -c "import matplotlib; print('matplotlib version:', matplotlib.__version__)" 2>/dev/null || echo "matplotlib not in venv"
+```
+
+## If that doesn't work, try this workaround:
+
+```bash
+# Try installing with different pip options
+pip install --no-cache-dir --no-deps pandas
+pip install --no-cache-dir --no-deps scikit-learn
+pip install --no-cache-dir --no-deps matplotlib
+```
+
+Try the first command (`pip install --no-deps pandas scikit-learn matplotlib seaborn tqdm joblib`) and see if it works without requiring external downloads.

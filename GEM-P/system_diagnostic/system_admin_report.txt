@@ -1,0 +1,161 @@
+=== GEM-P Package Installation Diagnostic Report ===
+Generated on: 2025年  8月 19日 火曜日 10:55:47 JST
+User: B20474
+Hostname: CTOLWE00010
+
+=== Python Environment ===
+Python version: Python 3.10.6
+Pip version: pip 22.0.2 from /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages/pip (python 3.10)
+Virtual environment: /mnt/data1/Share/yang-intern/venv
+
+=== Network Connectivity Tests ===
+Ping to 8.8.8.8:
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+rtt min/avg/max/mdev = 2.052/2.099/2.147/0.038 ms
+
+DNS resolution for pypi.org:
+Server:		127.0.0.53
+Address:	127.0.0.53#53
+
+Non-authoritative answer:
+Name:	pypi.org
+
+HTTPS connectivity tests:
+HTTP/1.1 200 Connection Established
+HTTP/1.1 200 Connection Established
+
+HTTP connectivity tests:
+HTTP/1.1 302 Moved Temporarily
+
+=== Package Installation Tests ===
+Testing pip install with different mirrors:
+1. Default PyPI:
+Requirement already satisfied: pandas in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.3.1)
+Requirement already satisfied: python-dateutil>=2.8.2 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: numpy>=1.22.4 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.1.2)
+Requirement already satisfied: six>=1.5 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+2. Tsinghua mirror (HTTPS):
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple/
+Requirement already satisfied: pandas in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.3.1)
+Requirement already satisfied: tzdata>=2022.7 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: pytz>=2020.1 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: numpy>=1.22.4 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.1.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+3. Tsinghua mirror (HTTP):
+Looking in indexes: http://pypi.tuna.tsinghua.edu.cn/simple/
+Requirement already satisfied: pandas in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.3.1)
+Requirement already satisfied: tzdata>=2022.7 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: pytz>=2020.1 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: numpy>=1.22.4 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.1.2)
+Requirement already satisfied: six>=1.5 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+4. Aliyun mirror:
+Looking in indexes: http://mirrors.aliyun.com/pypi/simple/
+Requirement already satisfied: pandas in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.3.1)
+Requirement already satisfied: tzdata>=2022.7 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: pytz>=2020.1 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: numpy>=1.22.4 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.1.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+5. With trusted hosts:
+Requirement already satisfied: pandas in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (2.3.1)
+Requirement already satisfied: tzdata>=2022.7 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: numpy>=1.22.4 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.1.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from pandas) (2025.2)
+Requirement already satisfied: six>=1.5 in /mnt/data1/Share/yang-intern/venv/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+6. Conda test (if available):
+timeout: コマンド `conda' の実行に失敗しました: そのようなファイルやディレクトリはありません
+
+=== GPU and CUDA Information ===
+CUDA version: V11.7.99
+GPU devices: NVIDIA GeForce RTX 4080
+Number of GPUs: 1
+
+=== PyTorch CUDA Support ===
+PyTorch CUDA available: True
+CUDA version: 11.8
+GPU count: 1
+
+=== Memory Information ===
+System RAM: 125Gi
+GPU Memory: 16376
+
+=== Storage Information ===
+Available disk space: 1.6T
+Current directory space: 155M
+
+=== Current Package Status ===
+Installed packages in virtual environment:
+cobra                    0.29.1
+matplotlib               3.10.5
+numpy                    2.1.2
+pandas                   2.3.1
+rdkit                    2025.3.5
+torch                    2.7.1+cu118
+torch_cluster            1.6.3+pt27cu118
+torch-geometric          2.6.1
+torch_scatter            2.1.2+pt27cu118
+torch_sparse             0.6.18+pt27cu118
+torch_spline_conv        1.2.2+pt27cu118
+torchaudio               2.7.1+cu118
+torchvision              0.22.1+cu118
+
+=== System Package Availability ===
+Available system packages:
+ソート中...
+全文検索...
+python3-pandas/jammy,jammy 1.3.5+dfsg-3 all
+ソート中...
+全文検索...
+ソート中...
+全文検索...
+python3-rdkit/jammy 202109.2-1build1 amd64
+
+=== Required Packages Missing ===
+pandas: OK
+scikit-learn: OK
+matplotlib: OK
+seaborn: OK
+rdkit: OK
+cobra: OK
+optlang: OK
+tqdm: OK
+joblib: OK
+torch-geometric: OK
+
+=== System Information ===
+OS: Ubuntu 22.04.1 LTS
+Architecture: x86_64
+Kernel: 5.15.0-58-generic
+
+=== User Permissions ===
+Can use sudo: NO
+User groups: B20474 techrg shared-users
+
+=== Package Manager Status ===
+apt update test:
+
+=== Network Proxy Information ===
+HTTP_PROXY: 
+HTTPS_PROXY: 
+http_proxy: http://-:-@www-proxy.chugai-pharm.co.jp:80/
+https_proxy: http://-:-@www-proxy.chugai-pharm.co.jp:80/
+
+=== Additional Package Details ===
+PyTorch Geometric version needed: >=2.1.0
+Current torch version: 2.7.1+cu118
+
+=== Alternative Installation Methods ===
+Conda available: NO
+pip config location: 
+
+=== End of Report ===
